@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+body{
+  width: 1250px;
+  margin: 10px auto;
+  text-align: center;
+}
+input{
+  display: inline-block;
+}
+.show{
+  margin: 20px auto;
+  border: 1px solid;
+  background: #59f;
+  width: 1200px;
+  height: 520px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.item{
+  display: inline-block;
+  font:italic bold 20px/30px arial,sans-serif;
+  color: white;
+  background: blue;
+  width: 15px;
+  margin: 0 2px 0 2px;
+  transition: height 2s;
+}
+  </style>
+  <script>
+var num = 0;
+function remove(e){
+  var show = document.getElementsByClassName('show')[0];
+  show.removeChild(this);
+}
+
+//左侧出事件处理函数
+function removeLeft(e){
+  var show = document.getElementsByClassName('show')[0];
+  var removedItem = show.firstElementChild;
+  var value = removedItem.innerText;
+  if (show.removeChild(removedItem));
+    num -= 1;
+}
+//右侧出事件处理函数
+function removeRight(e){
+  var show = document.getElementsByClassName('show')[0];
+  var removedItem = show.lastElementChild;
+  var value = removedItem.innerText;
+  if(show.removeChild(removedItem));
+    num -= 1;
+}
+
+//左侧入事件处理函数
+function insertLeft(e){
+  if (num >= 60){
+    alert('数量太多了！');
+    return;
+  }
+  var input = document.getElementsByTagName('input')[0];
+  var value = input.value;
+  if (value.search(/^\d+$/) == -1){
+    alert('要输入数字！');
+    return;
+  }
+  value = parseInt(value);
+  if(value < 10 || value > 100){
+    alert('输入数字范围是10到100!');
+    return;
+  }
+  num += 1;
+  var show = document.getElementsByClassName('show')[0];
+  var item = document.createElement('div');
+  item.setAttribute('class','item');
+  item.style.height = value * 5 + 'px';
+  show.insertBefore(item,show.firstElementChild);
+}
+//右侧入事件处理函数
+function insertRight(e){
+  if (num >= 60){
+    alert('数量太多了！');
+    return;
+  }
+  var input = document.getElementsByTagName('input')[0];
+  var value = input.value;
+  if (value.search(/^\d+$/) == -1){
+    alert('要输入数字！');
+    return;
+  }
+  value = parseInt(value);
+  if(value < 10 || value > 100){
+    alert('输入数字范围是10到100!');
+    return;
+  }
+  num += 1;
+  var show = document.getElementsByClassName('show')[0];
+  var item = document.createElement('div');
+  item.setAttribute('class','item');
+  item.style.height = String(value * 5) + 'px';
+  show.appendChild(item);
+}
+
+//交换两个元素
+function swap(e1,e2){
+  var parentNode = e1.parentNode;
+  e2 = parentNode.removeChild(e2);
+  parentNode.insertBefore(e2,e1);
+}
+
+//冒泡排序
+function buble(func){
+  var time = 200;
+  var items = document.getElementsByClassName('item');
+  var len = items.length;
+  var order = [];
+  for (let i=0; i<len; i++){
+    order.push(i);
+  }
+  for(let i=0; i<len-1; i++){
+    for(let j=0; j<len-1-i; j++){
+      if (func(items[order[j]],items[order[j+1]])){
+        var tmp = order[j];
+        order[j] = order[j+1];
+        order[j+1] = tmp;
+        setTimeout(function(){
+          swap(items[j],items[j+1]);
+        },time);
+        time += 200;
+      }
+    }
+  }
+}
+//调用冒泡排序进行排序
+function sort(e){
+  buble(function(a,b){
+    return parseInt(a.style.height) > parseInt(b.style.height);
+  });
+}
+
+window.onload = function(){
+  //为所有item添加点击事件：点击会被删除
+  var items = document.getElementsByClassName('item');
+  for (let item of items){
+    item.onclick = remove;
+  }
+  //左侧入事件
+  document.getElementsByTagName('input')[1].onclick = insertLeft;
+  //右侧入事件
+  document.getElementsByTagName('input')[2].onclick = insertRight;
+  //左侧出事件
+  document.getElementsByTagName('input')[3].onclick = removeLeft;
+  //右侧出事件
+  document.getElementsByTagName('input')[4].onclick = removeRight;
+  //冒泡排序
+  document.getElementsByTagName('input')[5].onclick = sort;
+};
+  </script>
+  <title></title>
+</head>
+<body>
+  <input type="text"></input>
+  <input type="button" value='左侧入'></input>
+  <input type="button" value='右侧入'></input>
+  <input type="button" value='左侧出'></input>
+  <input type="button" value='右侧出'></input>
+  <input type='button' value='冒泡排序'></input>
+  <div class="show">
+  </div>
+</body>
+</html>
