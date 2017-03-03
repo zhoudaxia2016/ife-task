@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+body{
+  width: 1000px;
+  margin: 100px auto;
+  text-align: center;
+}
+input{
+  display: inline-block;
+}
+.show{
+  margin-top: 5px;
+  margin-left: 250px;
+  text-align: left;
+}
+.item{
+  display: inline-block;
+  font:italic bold 20px/30px arial,sans-serif;
+  color: white;
+  background: blue;
+  height: 30px;
+  padding: 5px;
+  margin: 0 5px 0 5px;
+}
+  </style>
+  <script>
+function remove(e){
+  var show = document.getElementsByClassName('show')[0];
+  show.removeChild(this);
+}
+
+//左侧出事件处理函数
+function removeLeft(e){
+  var show = document.getElementsByClassName('show')[0];
+  var removedItem = show.firstElementChild;
+  var value = removedItem.innerText;
+  show.removeChild(removedItem);
+  var input = document.getElementsByTagName('input')[0];
+  input.value = value;
+}
+//右侧出事件处理函数
+function removeRight(e){
+  var show = document.getElementsByClassName('show')[0];
+  var removedItem = show.lastElementChild;
+  var value = removedItem.innerText;
+  show.removeChild(removedItem);
+  var input = document.getElementsByTagName('input')[0];
+  input.value = value;
+}
+//左侧入事件处理函数
+function insertLeft(e){
+  var show = document.getElementsByClassName('show')[0];
+  var input = document.getElementsByTagName('input')[0];
+  var value = input.value;
+  var item = document.createElement('div');
+  item.setAttribute('class','item');
+  var textNode = document.createTextNode(value);
+  item.appendChild(textNode);
+  show.insertBefore(item,show.firstElementChild);
+}
+//右侧入事件处理函数
+function insertRight(e){
+  var show = document.getElementsByClassName('show')[0];
+  var input = document.getElementsByTagName('input')[0];
+  var value = input.value;
+  var item = document.createElement('div');
+  item.setAttribute('class','item');
+  var textNode = document.createTextNode(value);
+  item.appendChild(textNode);
+  show.appendChild(item);
+}
+
+
+window.onload = function(){
+  //为所有item添加点击事件：点击会被删除
+  var items = document.getElementsByClassName('item');
+  for (let item of items){
+    item.onclick = remove;
+  }
+  //左侧入事件
+  document.getElementsByTagName('input')[1].onclick = insertLeft;
+  //右侧入事件
+  document.getElementsByTagName('input')[2].onclick = insertRight;
+  //左侧出事件
+  document.getElementsByTagName('input')[3].onclick = removeLeft;
+  //右侧出事件
+  document.getElementsByTagName('input')[4].onclick = removeRight;
+};
+  </script>
+  <title></title>
+</head>
+<body>
+  <input type="text"></input>
+  <input type="button" value='左侧入'></input>
+  <input type="button" value='右侧入'></input>
+  <input type="button" value='左侧出'></input>
+  <input type="button" value='右侧出'></input>
+  <div class="show">
+    <div class="item">10</div>
+    <div class="item">30</div>
+    <div class="item">50</div>
+  </div>
+</body>
+</html>
