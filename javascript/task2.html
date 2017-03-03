@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+    <style>
+li{
+  list-style: none;
+}
+    </style>
+  </head>
+<body>
+
+  <h3>污染城市列表</h3>
+  <div class="option">
+    <h4> 空气质量指数需要多高才不算差呢？<h4>
+    <select id='passed_value'>
+      <option value="90">90</option>
+      <option value="80">80</option>
+      <option value="70">70</option>
+      <option value="60">60</option>
+      <option value="50">50</option>
+    </select>
+    <input id='btn' type='button' value='看一下达标的城市'>
+  <ul id="aqi-list">
+  </ul>
+
+<script type="text/javascript">
+
+var aqiData = [
+  ["北京", 90],
+  ["上海", 50],
+  ["福州", 10],
+  ["广州", 50],
+  ["成都", 90],
+  ["西安", 100]
+];
+var hasSorted = false;
+
+(function () {
+
+  /*
+  遍历读取aqiData中各个城市的数据
+  将空气质量指数大于60的城市显示到aqi-list的列表中
+  */
+  var btn = document.getElementById('btn');
+  btn.onclick = function(){
+    passed_value = document.getElementById('passed_value').value;
+    //排序
+    if (!hasSorted){
+      aqiData.sort(function(a,b){
+        return a[1] < b[1];
+      })
+    }
+    for (let i = 0;i < aqiData.length;i++){
+      console.log(aqiData[i][0]);
+      }
+    //去除不及格城市
+    data = aqiData.filter(function(city){
+      return city[1] >= passed_value;
+    });
+    //重新更新aqi-list
+    var aqi_list = document.getElementById('aqi-list');
+    aqi_list.innerHTML = '';
+    for (let i = 0;i < data.length;i++){
+      var text = '第' + (i+1) + '名:  ' + data[i][0] + ',' + data[i][1];
+      aqi_list.innerHTML += '<li>';
+      aqi_list.innerHTML += text;
+      aqi_list.innerHTML += '</li>';
+    }
+  };
+})();
+
+</script>
+</body>
+</html>
+
