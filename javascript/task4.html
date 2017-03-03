@@ -39,7 +39,7 @@ function removeLeft(e){
   var value = removedItem.innerText;
   show.removeChild(removedItem);
   var input = document.getElementsByTagName('input')[0];
-  input.value = value;
+  alert('你删除了：' + value)
 }
 //右侧出事件处理函数
 function removeRight(e){
@@ -48,13 +48,17 @@ function removeRight(e){
   var value = removedItem.innerText;
   show.removeChild(removedItem);
   var input = document.getElementsByTagName('input')[0];
-  input.value = value;
+  alert('你删除了：' + value)
 }
 //左侧入事件处理函数
 function insertLeft(e){
-  var show = document.getElementsByClassName('show')[0];
   var input = document.getElementsByTagName('input')[0];
   var value = input.value;
+  if (value.search(/^\d+$/) == -1){
+    alert('要输入数字才可以噢！');
+    return;
+  }
+  var show = document.getElementsByClassName('show')[0];
   var item = document.createElement('div');
   item.setAttribute('class','item');
   var textNode = document.createTextNode(value);
@@ -63,9 +67,13 @@ function insertLeft(e){
 }
 //右侧入事件处理函数
 function insertRight(e){
-  var show = document.getElementsByClassName('show')[0];
   var input = document.getElementsByTagName('input')[0];
   var value = input.value;
+  if (value.search(/^\d+$/) == -1){
+    alert('要输入数字才可以噢！');
+    return;
+  }
+  var show = document.getElementsByClassName('show')[0];
   var item = document.createElement('div');
   item.setAttribute('class','item');
   var textNode = document.createTextNode(value);
@@ -99,9 +107,6 @@ window.onload = function(){
   <input type="button" value='左侧出'></input>
   <input type="button" value='右侧出'></input>
   <div class="show">
-    <div class="item">10</div>
-    <div class="item">30</div>
-    <div class="item">50</div>
   </div>
 </body>
 </html>
