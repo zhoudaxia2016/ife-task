@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+*{margin: 0;color: #fff;}
+body{
+  background: #aaf;
+}
+.traversal{
+  width: 400px;
+  margin: 30px auto;
+}
+input{
+  color: #000;
+}
+.container{
+  margin: 30px auto;
+}
+.parent{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 800px;
+  height: 250px;
+  border: 1px solid #00a;
+}
+.child{
+  width: 35%;
+  height: 80%;
+  border: 1px solid #00a;
+  background: #aaf;
+}
+  </style>
+</head>
+<body>
+  <div class="traversal">
+    <span> 你要怎么遍历呢：</span>
+    <input type="button" value="前序遍历"></input>
+    <input type="button" value="中序遍历"></input>
+    <input type="button" value="后序遍历"></input>
+  </div>
+  <div class="parent container">
+    <div class="child parent">
+      <div class="child parent">
+        <div class="child"></div>
+        <div class="child"></div>
+      </div>
+      <div class="child parent">
+        <div class="child"></div>
+        <div class="child"></div>
+      </div>
+    </div>
+    <div class="child parent">
+      <div class="child parent">
+        <div class="child"></div>
+        <div class="child"></div>
+      </div>
+      <div class="child parent">
+        <div class="child"></div>
+        <div class="child"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+var originalColor = '#aaf';
+var renderColor = '#00a';
+var interval = 0;
+var sep = 500;
+
+//渲染函数
+function render(ele){
+  //渲染背景颜色，表示遍历到这了
+  setTimeout(function(){
+    ele.style.backgroundColor = renderColor;
+  },interval);
+  //把颜色恢复
+  interval += sep;
+  setTimeout(function(){
+    ele.style.backgroundColor = originalColor;
+  },interval);
+  interval += sep;
+}
+
+//前序遍历
+function onpre(e){
+  interval = 0;
+  preorder(document.getElementsByClassName('container')[0]);
+}
+function preorder(ele){
+  //渲染该节点然后恢复
+  render(ele);
+
+  //遍历子节点
+  if (ele.hasChildNodes()){
+    var childNodes = ele.childNodes;
+    for (let i=0; i<childNodes.length; i++){
+      if(childNodes[i].nodeType == 1){
+        preorder(childNodes[i]);
+      }
+    }
+  }
+}
+
+//中序遍历
+function onin(e){
+  interval = 0;
+  inorder(document.getElementsByClassName('container')[0]);
+}
+function inorder(ele){
+  if (ele.firstElementChild != null){
+    inorder(ele.firstElementChild);
+    render(ele);
+    inorder(ele.lastElementChild);
+  }
+  else{
+    render(ele);
+  }
+}
+
+//后序遍历
+function onpost(e){
+  interval = 0;
+  postorder(document.getElementsByClassName('container')[0]);
+}
+function postorder(ele){
+  //遍历子节点
+  if (ele.hasChildNodes()){
+    var childNodes = ele.childNodes;
+    for (let i=0; i<childNodes.length; i++){
+      if(childNodes[i].nodeType == 1){
+        postorder(childNodes[i]);
+      }
+    }
+  }
+  //渲染该节点然后恢复
+  render(ele);
+}
+
+
+var btns = document.getElementsByTagName('input');
+btns[0].onclick = onpre;
+btns[1].onclick = onin;
+btns[2].onclick = onpost;
+  </script>
+</body>
+</html>
