@@ -8,6 +8,9 @@ body{
   margin: 100px auto;
   text-align: center;
 }
+mark{
+  background: #f90;
+}
 
 textarea{
   margin-bottom: 30px;
@@ -95,11 +98,12 @@ function insertRight(e){
 
 function search(e){
   var str = document.getElementById('searchStr').value;
-  var pattern = new RegExp(str);
+  var pattern = new RegExp('(' + str + ')','g');
   var items = document.getElementsByClassName('item');
   for (let i=0; i<items.length; i++){
     if (pattern.test(items[i].innerText)){
         items[i].style.backgroundColor = '#f90';
+        items[i].innerHTML = items[i].innerText.replace(pattern,'<mark>$1</mark>');
     }
   }
 }
