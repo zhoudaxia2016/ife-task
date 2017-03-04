@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+body{
+  width: 1000px;
+  margin: 100px auto;
+  text-align: center;
+}
+
+textarea{
+  margin-bottom: 30px;
+}
+input{
+  display: inline-block;
+}
+.show{
+  margin-top: 30px;
+  margin-left: 50px;
+  text-align: left;
+}
+.item{
+  display: inline-block;
+  font:italic bold 20px/30px arial,sans-serif;
+  color: white;
+  background: blue;
+  height: 30px;
+  padding: 5px;
+  margin: 0 5px 20px 5px;
+}
+  </style>
+  <script>
+function remove(e){
+  var show = document.getElementsByClassName('show')[0];
+  show.removeChild(this);
+}
+
+//左侧出事件处理函数
+function removeLeft(e){
+  var show = document.getElementsByClassName('show')[0];
+  var removedItem = show.firstElementChild;
+  var value = removedItem.innerText;
+  show.removeChild(removedItem);
+  var input = document.getElementsByTagName('input')[0];
+  alert('你删除了：' + value)
+}
+//右侧出事件处理函数
+function removeRight(e){
+  var show = document.getElementsByClassName('show')[0];
+  var removedItem = show.lastElementChild;
+  var value = removedItem.innerText;
+  show.removeChild(removedItem);
+  var input = document.getElementsByTagName('input')[0];
+  alert('你删除了：' + value)
+}
+//左侧入事件处理函数
+function insertLeft(e){
+  var text = document.getElementsByTagName('textarea')[0];
+  var sep = /,|，|\s+|\n|\r|、/;
+  var valueList = text.value.split(sep);
+  valueList = valueList.filter(function(value){
+    return value != '';
+  });
+  var show = document.getElementsByClassName('show')[0];
+  var firstChild = show.firstElementChild;
+  for (let i=0; i<valueList.length; i++){
+    var item = document.createElement('div');
+    item.setAttribute('class','item');
+    item.onclick = remove;
+    var textNode = document.createTextNode(valueList[i]);
+    item.appendChild(textNode);
+    show.insertBefore(item,firstChild);
+  }
+}
+//右侧入事件处理函数
+function insertRight(e){
+  var text = document.getElementsByTagName('textarea')[0];
+  var sep = /,|，|\s+|\n|\r|、/;
+  var valueList = text.value.split(sep);
+  valueList = valueList.filter(function(value){
+    return value != '';
+  });
+  var show = document.getElementsByClassName('show')[0];
+  var firstChild = show.firstElementChild;
+  for (let i=0; i<valueList.length; i++){
+    var item = document.createElement('div');
+    item.setAttribute('class','item');
+    item.onclick = remove;
+    var textNode = document.createTextNode(valueList[i]);
+    item.appendChild(textNode);
+    show.appendChild(item);
+  }
+}
+
+function search(e){
+  var str = document.getElementById('searchStr').value;
+  var pattern = new RegExp(str);
+  var items = document.getElementsByClassName('item');
+  for (let i=0; i<items.length; i++){
+    if (pattern.test(items[i].innerText)){
+        items[i].style.backgroundColor = '#f90';
+    }
+  }
+}
+
+window.onload = function(){
+  //左侧入事件
+  document.getElementsByTagName('input')[0].onclick = insertLeft;
+  //右侧入事件
+  document.getElementsByTagName('input')[1].onclick = insertRight;
+  //左侧出事件
+  document.getElementsByTagName('input')[2].onclick = removeLeft;
+  //右侧出事件
+  document.getElementsByTagName('input')[3].onclick = removeRight;
+  //查找事件
+  document.getElementsByTagName('input')[4].onclick = search;
+};
+  </script>
+  <title></title>
+</head>
+<body>
+  <textarea autofocus placeholder='可以输入多个数字中文或者英文，分隔符可以为回车，逗号，顿号和空格' cols='30'></textarea>
+  <br>
+  <input type="button" value='左侧入'></input>
+  <input type="button" value='右侧入'></input>
+  <input type="button" value='左侧出'></input>
+  <input type="button" value='右侧出'></input>
+  <input type="button" value="查找"></input>
+  <input type="text" placeholder='你要找什么！' id='searchStr'></input>
+  <div class="show">
+  </div>
+</body>
+</html>
