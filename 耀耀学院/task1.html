@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+.container{
+  margin: 100px 200px;
+  font-size: 20px;
+  position: relative;
+  height: 40px;
+}
+input{
+  margin-left: 20px;
+  border-radius: 3px;
+  line-height: 30px;
+  font-size: 20px;
+  height: 38px;
+}
+
+input[type=text]{
+  border: solid 1px #aaa;
+  width: 180px;
+  transition: width 1s;
+}
+input[type=button]{
+  background: #2e79bc;
+  border: none;
+  color: #fff;
+  box-shadow: 0px 5px 0px #2e60aa;
+  transition: all .5s ease;
+}
+input[type=button]:active{
+  box-shadow: 0px 3px 0px #2e60aa;
+  position: relative;
+  top: 3px;
+}
+#msg{
+  margin-left: 60px;
+  color: #aaa;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    名称
+    <input type="text"></input>
+    <input type='button' value='验证'></input>
+    <br>
+    <p id='msg'>必填，长度为4到16个字符</p>
+  </div>
+  <script>
+function validate(e){
+  var text = document.getElementsByTagName('input')[0];
+  var name = text.value;
+  var len = [].reduce.call(name,function(len,ch){
+      if (ch <= '\u00ff' && ch >= '\u0000'){
+        return len += 1;
+      }
+      else{
+        return len += 2;
+      }
+  },0);
+  if (len > 16){
+    text.style.borderColor = 'red';
+    var msg = document.getElementById('msg');
+    msg.style.color = 'red';
+    msg.innerText = '姓名长度超过16个字符了！';
+  }
+  else if (len < 4){
+    text.style.borderColor = 'red';
+    var msg = document.getElementById('msg');
+    msg.style.color = 'red';
+    if (len > 0)
+      msg.innerText = '姓名长度低于4个字符了！';
+    else
+      msg.innerText = '姓名不能为空！';
+  }
+  else{
+    text.style.borderColor = 'green';
+    var msg = document.getElementById('msg');
+    msg.style.color = 'green';
+    msg.innerText = '名称格式正确！';
+  }
+}
+document.getElementsByTagName('input')[1].onclick = validate;
+
+  </script>
+</body>
+</html>
