@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+*{margin: 0;}
+.container{
+  width: 500px;
+  margin: 100px auto;
+  position: relative;
+}
+.name{
+  font: 600 20px/30px FangSong ;
+  float: left;
+  width: 100px;
+  text-align: right;
+}
+.input{
+  margin: 0 0 10px 150px;
+}
+.text{
+  border-radius: 5px;
+  height: 30px;
+  width: 200px;
+  font: 600 20px/30px FangSong;
+  border: solid 1px #aaa;
+}
+.text:focus{
+  border: solid 1px #0af;
+  box-shadow: 2px 2px 3px #0af, -2px 0 4px #0af;
+}
+input[type=submit]{
+  border-radius: 5px;
+  text-align: center;
+  width: 50px;
+  padding: 10px;
+  margin-left: 304px;
+  border: solid 1px #0aa;
+  background: #0af;
+  box-shadow: 0 5px #05a;
+}
+input[type=submit]:active{
+  position: relative;
+  top: 3px;
+  box-shadow: 0 3px #05a;
+}
+.msg{
+  margin-top: 10px;
+  color: #aaa;
+  visibility: hidden;
+}
+input[type=text]:focus +.msg{
+  visibility: visible;
+}
+  </style>
+</head>
+<body>
+<div class='container'>
+
+  <div class="name">名称</div>
+  <div class='input'>
+    <input class='text' type="text"></input>
+    <p class='msg'>必填，请输入长度为4~16的字符</p>
+  </div>
+
+  <div class="name">密码</div>
+  <div class='input'>
+    <input class='text' type="password"></input>
+    <p class='msg'>请设置强大的密码</p>
+  </div>
+  
+  <div class="name">密码确认</div>
+  <div class='input'>
+    <input class='text' type="password"></input>
+    <p class='msg'>请确认填写密码</p>
+  </div>
+
+  <div class="name">邮箱</div>
+  <div class='input'>
+    <input class='text' type="text"></input>
+    <p class='msg'>请填写邮箱</p>
+  </div>
+
+  <div class="name">手机</div>
+  <div class='input'>
+    <input class='text' type="text"></input>
+    <p class='msg'>请填写手机号码</p>
+  </div>
+
+  <input type="submit" value='提交'></input>
+</div>
+<script>
+  var msgs = ['必填，请输入长度为4~16的字符','请输入强大的密码','请确认填写密码','请填写邮箱','请填写手机号码'];
+  var ok = [false,false,false,false,false];
+
+  var texts = document.getElementsByClassName('text');
+  for (let i=0,len=texts.length; i<len; i++){
+    let msg = msgs[i];
+    texts[i].onfocus = function(e){
+      this.style.borderColor = '#0af';
+      this.parentNode.getElementsByTagName('p')[0].innerText = msg;
+      this.parentNode.getElementsByTagName('p')[0].style.color = '#aaa';
+    }
+  }
+  
+  document.getElementsByTagName('input')[0].onblur = function(e){
+    var msg = '';
+    var input = document.getElementsByTagName('input')[0];
+    var value = input.value;
+    var p = input.parentNode.getElementsByTagName('p')[0];
+    p.style.visibility = 'visible';
+    if (value == '') {
+      p.innerText = '名称不能为空';
+      p.style.color = 'red';
+      input.style.borderColor = 'red';
+      ok[0] = false;
+    }
+    else{
+      var len = [].reduce.call(value,function(len,ch){
+        if (ch <= '\u00ff' && ch >= '\u0000')
+          return len += 1;
+        else
+          return len += 2;
+      },0);
+      if (len > 16) { 
+        p.innerText = '长度超过16了！';
+        p.style.color = 'red';
+        input.style.borderColor = 'red';
+        ok[0] = false
+      }
+      else if (len < 4){
+        p.innerText = '长度低于4也不行噢!';
+        p.style.color = 'red';
+        input.style.borderColor = 'red';
+        ok[0] = false;
+      }
+      else {
+        p.innerText = '名称格式正确';
+        p.style.color = '#0a6';
+        input.style.borderColor = 'lightgreen';
+        ok[0] = true;
+      }
+    }
+  };
+
+  document.getElementsByTagName('input')[1].onblur = function(e){
+    var input = document.getElementsByTagName('input')[1];
+    var p = input.parentNode.getElementsByTagName('p')[0];
+    var password = input.value;
+    p.style.visibility = 'visible';
+    if (password !== ''){
+      p.innerText = '密码可用';
+      p.style.color = '#0a6';
+      input.style.borderColor = 'lightgreen';
+      ok[1] = true;
+    }
+    else{
+      p.innerText = '请输入密码！';
+      p.style.color = 'red';
+      input.style.borderColor = 'red';
+      ok[1] = false;
+    }
+  }
+
+  document.getElementsByTagName('input')[2].onblur = function(e){
+    var input = document.getElementsByTagName('input')[1];
+    var firstPassword = input.value;
+    var input = document.getElementsByTagName('input')[2];
+    var secondPassword = input.value;
+    var p = input.parentNode.getElementsByTagName('p')[0];
+    p.style.visibility = 'visible';
+    if (firstPassword === secondPassword){
+      if (firstPassword === '') {
+        ok[2] = false;
+        return;
+      }
+      p.style.color = '#0a6';
+      p.innerText = '密码输入一致';
+      input.style.borderColor = 'lightgreen';
+      ok[2] = true;
+    }
+    else{
+      p.style.color = 'red';
+      p.innerText = '密码输入不一致';
+      input.style.borderColor = 'red';
+      ok[2] = false;
+    }
+  }
+
+  document.getElementsByTagName('input')[3].onblur = function(e){
+    var input = document.getElementsByTagName('input')[3];
+    var email = input.value;
+    var pattern = /^[a-zA-Z0-9](\.?[a-zA-Z0-9_-])*@[a-zA-Z0-9](\.?[a-zA-Z0-9_-])*$/;
+    var p = input.parentNode.getElementsByTagName('p')[0];
+    p.style.visibility = 'visible';
+    if (pattern.test(email)){
+      p.style.color = '#0a6';
+      p.innerText = '邮箱地址合法';
+      input.style.borderColor = 'lightgreen';
+      ok[3] = true;
+    }
+    else{
+      p.style.color = 'red';
+      p.innerText = '请确认您的邮箱是否正确';
+      input.style.borderColor = 'red';
+      ok[3] = false;
+    }
+  }
+
+  document.getElementsByTagName('input')[4].onblur = function(e){
+    var input = document.getElementsByTagName('input')[4];
+    var phonenumber = input.value;
+    var pattern = /^1[358][0-9]{9}$/;
+    var p = input.parentNode.getElementsByTagName('p')[0];
+    p.style.visibility = 'visible';
+    if (pattern.test(phonenumber)){
+      p.style.color = '#0a6';
+      p.innerText = '手机号码合法';
+      input.style.borderColor = 'lightgreen';
+      ok[4] = true;
+    }
+    else{
+      p.style.color = 'red';
+      p.innerText = '请确认您的手机号码是否填写正确';
+      input.style.borderColor = 'red';
+      ok[4] = false;
+    }
+  }
+  
+document.getElementsByTagName('input')[5].onclick = function(e){
+  var input = document.getElementsByClassName('text');
+  for (let i=0,len=input.length; i<len; i++){
+    input[i].onblur();
+  }
+  if (ok.every(function(v){return v;})){
+    alert('注册成功！');
+  }
+  else{
+    alert('输入有误，请确认！');
+  }
+}
+    
+</script>
+</body>
+</html>
