@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+<style>
+*{margin: 0;padding: 0;}
+.container{
+  width: 500px;
+  margin: 100px auto;
+}
+.student{
+  margin-right: 5px;
+}
+input[type=radio]{
+}
+.radio{
+  position: relative;
+  margin-right: 20px;
+  --fs: 25px;
+  font-size: var(--fs);
+  text-indent: 40px;
+}
+.radio-btn{
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+  width: calc(var(--fs) * 0.6);
+  height: calc(var(--fs) * 0.6);
+  border: calc(var(--fs) * 0.2) solid #03a;
+  border-radius: calc(var(--fs) * 0.6);
+}
+.radio-btn::before{
+  content: '';
+  position: absolute;
+  background: #02f;
+  top: calc(var(--fs) * 0.15);
+  left: calc(var(--fs) * 0.15);
+  width: calc(var(--fs) * 0.3);
+  height: calc(var(--fs) * 0.3);
+  border-radius: calc(var(--fs) * 0.15);
+}
+.yes.radio-btn::before{
+  opacity: 1;
+}
+.no.radio-btn::before{
+  opacity: 0;
+}
+
+.radio-btn:hover::before{
+  opacity: 0.3;
+}
+
+.college-list,
+.units{
+  margin-top: 30px;
+}
+select{
+  -webkit-appearance: none;
+  width: 100px;
+  background: #20b;
+  color: #ccc;
+}
+select,
+input[type=text]{
+  border-radius: 3px;
+  font-size: 16px;
+  line-height: 30px;
+  margin-left: 30px;
+}
+.units{
+  display: none;
+}
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="option">
+      <span class='student radio'><span class='radio-btn yes'></span><input type="radio" name='isStudent'>&nbsp&nbsp&nbsp在校生</span>
+      <span class='not-stu radio'><span class='radio-btn no'></span><input type="radio" name='isStudent'>&nbsp&nbsp&nbsp非在校生</span>
+    </div>
+    <div class="college-list">
+      学校
+      <select name="city">
+        <option value="湛江">湛江</option>
+        <option value="北京">北京</option>
+        <option value="广州">广州</option>
+      </select>
+      <select name="college">
+        <option value="湛江海洋大学">湛江海洋大学</option>
+        <option value="广东医学院">广东医学院</option>
+        <option value="湛江师范学院">湛江师范学院</option>
+      </select>
+    </div>
+    <div class=units>
+    就业单位<input type=text> 
+    </div>
+  </div>
+  <script>
+var colleageLists = [['湛江海洋大学','广东医学院','湛江师范学院'],['北京大学','清华大学'],['华南师范','中山大学','华南理工']];
+var city = document.getElementsByName('city')[0];
+city.onchange = function(e){
+  var colleages = colleageLists[this.options.selectedIndex] ;
+  var colleageOptions = document.getElementsByName('college')[0];
+  colleageOptions.options.length = 0;
+  for(let i=0,len=colleages.length; i<len; i++){
+    colleageOptions.options.add(new Option(colleages[i],colleages[i]));
+  }
+}
+
+var radios = document.getElementsByTagName('input');
+
+function onclick(e){
+  var radio = this.parentNode.getElementsByTagName('input')[0];
+  var btns = document.getElementsByClassName('radio-btn');
+  if (radio.checked === false){
+    if(btns[0] == this){
+      btns[0].className = 'radio-btn yes';
+      btns[1].className = 'radio-btn no';
+      document.getElementsByClassName('college-list')[0].style.display = 'block';
+      document.getElementsByClassName('units')[0].style.display = 'none';
+    }
+    else{
+      btns[1].className = 'radio-btn yes';
+      btns[0].className = 'radio-btn no';
+      document.getElementsByClassName('college-list')[0].style.display = 'none';
+      document.getElementsByClassName('units')[0].style.display = 'block';
+    }
+  }
+  radio.click();
+}
+radios[0].click();
+var radio_btns = document.getElementsByClassName('radio-btn');
+radio_btns[0].onclick = onclick;
+radio_btns[1].onclick = onclick;
+  </script>
+</body>
+</html>
