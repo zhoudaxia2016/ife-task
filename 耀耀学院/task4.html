@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+*{
+  margin: 0;
+  padding: 0;
+}
+#table{
+  border: 1px solid;
+  background: #aaa;
+  display: inline-block;
+  margin: 50px 200px;
+}
+.item{
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  margin: 1px;
+  background: #fff;
+}
+.box{
+  background: #d22;
+  position: relative;
+}
+.left::before{
+  position: absolute;
+  content: '';
+  width: 20%;
+  height: 100%;
+  background: #00a;
+  top: 0;
+  left: 0;
+} 
+.right::before{
+  position: absolute;
+  content: '';
+  width: 20%;
+  height: 100%;
+  background: #00a;
+  top: 0;
+  right: 0;
+} 
+.top::before{
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 20%;
+  background: #00a;
+  top: 0;
+  left: 0;
+} 
+.bottom::before{
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 20%;
+  background: #00a;
+  bottom: 0;
+  left: 0;
+} 
+#command{
+  width: 100%;
+  background: #0ba;
+  text-align: center;
+}
+input{
+  font-size: 16px;
+  line-height: 26px;
+}
+  </style>
+</head>
+<body>
+<div id=table>
+<div id=command>
+  <input type="text">
+  <input type=button value='执行'>
+</div>
+<div class="row">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+<div class="row">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+<div class="row">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+<div class="row">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+<div class="row">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+<div class="row">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+<div class="row">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+<div class="row">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+<div class="row">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+<div class="row">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+</div>
+<script>
+var directions = ['left','top','right','bottom'];
+// 随机初始化位置与方向
+var row = Math.floor(Math.random() * 10);
+var col = Math.floor(Math.random() * 10);
+var dir = Math.floor(Math.random() * 4);
+console.log(dir,row,col);
+
+var table = document.getElementById('table');
+table.children[row+1].children[col].className = 'item box ' + directions[dir];
+
+// 命令处理
+document.getElementsByTagName('input')[1].onclick = function(e){
+  var cmd = document.getElementsByTagName('input')[0].value;
+  if (cmd === 'GO') go();
+  else if(cmd === 'TUN LEF') trun(3);
+  else if(cmd === 'TUN RIG') trun(1);
+  else if(cmd === 'TUN BAC') trun(2);
+  // 命令不匹配，提示信息
+  else{
+    alert('你输入的命令不对！请输入"GO","TUN LEF","TUN RIG","TUN BAC".');
+  }
+}
+
+// 移动
+function go(){
+  if( (dir === 0 && col <= 0) || (dir === 2 && col >= 9) ||(dir === 1 && row <= 0) ||(dir === 3 && row >= 9) ){
+    alert('撞墙了！');
+    return;
+  }
+  table.children[row+1].children[col].className = 'item';
+  if (dir === 0){
+    col -= 1;
+    table.children[row+1].children[col].className = 'item box ' + directions[dir];
+  }
+  else if (dir === 1){
+    row -= 1;
+    table.children[row+1].children[col].className = 'item box ' + directions[dir];
+  }
+  else if (dir === 2){
+    col += 1;
+    table.children[row+1].children[col].className = 'item box  '+ directions[dir];
+  }
+  else if (dir === 3){
+    row += 1;
+    table.children[row+1].children[col].className = 'item box ' + directions[dir];
+  }
+}
+
+// 转向
+function trun(n){
+  dir = (dir+n)%4;
+  document.getElementById('table').children[row+1].children[col].className = 'item box ' + directions[dir];
+}
+
+
+</script>
+</body>
+</html>
