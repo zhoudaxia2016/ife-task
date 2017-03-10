@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+*{margin: 0;padding: 0;}
+.main{
+  width: 400px;
+  margin: 100px auto;
+  font-size: 20px;
+}
+.border{
+  height: 2px;
+  width: 100%;
+  background: #0aa;
+  margin: 20px 0px;
+}
+input{
+  float: right;
+  height: 30px;
+  font-size: 16px;
+}
+#popup{
+  border: none;
+  color: #fff;
+  background: #098;
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+  box-shadow: 3px 3px 0 #0aa;
+  position: relative;
+}
+#popup:active{
+  box-shadow: 1px 1px 0 #00f;
+  position: relative;
+  top: 2px;
+  left: 2px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="main">
+    <h1>弹出浮出层</h1>
+    浮出层title: <input class="title" value='title' type="text">
+    <div class="border"></div>
+    浮出层content: <input class='content' type='text' value='content'>
+    <div class="border"></div>
+    弹出: <input value='弹出' type="button" id=popup>
+    <div class="border"></div>
+  </div>
+  <script>
+// 弹出层构造函数
+function Popup(t,c){
+  var title = t;
+  var content = c;
+  // 透明罩
+  var lower = document.createElement('div');
+  lower.style.position = 'fixed';
+  lower.style.width = '100%';
+  lower.style.height = '100%';
+  lower.style.top = '0';
+  lower.style.left = '0';
+  lower.style.backgroundColor = 'rgba(0,0,0,0.5)';
+  lower.onclick = function(e){
+    document.body.removeChild(this);
+  }
+  // 弹出层
+  var upper = document.createElement('div');
+  upper.style.width = '500px';
+  upper.style.minHeight = '300px';
+  upper.style.backgroundColor = '#fff';
+  upper.style.position = 'absolute';
+  upper.style.left = '50%';
+  upper.style.top = '50%';
+  upper.style.transform = 'translate(-50%,-50%)';
+
+  // Title
+  var h2 = document.createElement('h2');
+  h2.appendChild(document.createTextNode(title));
+  h2.style.lineHeight = '50px';
+  h2.style.height = '50px';
+  h2.style.backgroundColor = '#00a';
+  h2.style.textIndent = '2em';
+  upper.appendChild(h2);
+
+  // Content
+  var p = document.createElement('p');
+  p.appendChild(document.createTextNode(content));
+  p.style.fontSize = '20px';
+  p.style.lineHeight = '25px';
+  p.style.marginTop = '10px';
+  p.style.wordWrap = 'break-word';
+  upper.appendChild(p);
+
+  // 确认按钮
+  var btn = document.createElement('input');
+  btn.type = 'button';
+  btn.value = '确认';
+  btn.style.position = 'absolute';
+  btn.style.right = '20px';
+  btn.style.bottom = '20px';
+  btn.onclick = function(e){
+    lower.click();
+  }
+  upper.appendChild(btn);
+  
+  // 重新定义子元素点击事件
+  upper.onclick = function(e){
+    e.stopPropagation();
+  };
+  lower.appendChild(upper);
+  
+  this.popup = function(){
+    document.body.appendChild(lower);
+  }
+}
+document.getElementById('popup').onclick = function(e){
+  var title = document.getElementsByClassName('title')[0].value;
+  var content = document.getElementsByClassName('content')[0].value;
+  var popup = new Popup(title,content);
+  popup.popup();
+}
+  </script>
+</body>
+</html>
