@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+.bg,.container{
+  width: 400px;
+  height: 600px;
+  position: absolute;
+  left: calc(50% - 200px);
+}
+.bg{
+  background: url(wife.jpg);
+  transition: all 2s;
+}
+.main:hover .bg{
+  filter: blur(3px);
+}
+
+.container *{
+  position: absolute;
+  transition: all 2s;
+}
+@-webkit-keyframes streamer{
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200% 100%;
+  }
+}
+p{
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  line-height: 40px;
+  top: 50%;
+  opacity: 0;
+  background-image: -webkit-linear-gradient(left,blue,red,green,blue);
+  background-image: -moz-linear-gradient(left,blue,red,green,blue);
+  background-image: -o-linear-gradient(left,blue,red,green,blue);
+  background-image: linear-gradient(left,blue,red,green,blue);
+  background-size: 200% 100%;
+  -moz-background-clip: text;
+  -webkit-background-clip: text;
+  -o-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  -o-text-fill-color: transparent;
+  text-fill-color: transparent;
+  -webkit-animation: streamer 3s infinite;
+}
+.container:hover p{
+  opacity: 1;
+  top: calc(50% - 20px);
+}
+.border-top{
+  width: 30%;
+  height: 6px;
+  top: 10%;
+  left: 35%;
+  background: #fff;
+  opacity: 0;
+}
+.container:hover .border-top{
+  width: 80%;
+  left: 10%;
+  opacity: 0.5;
+}
+.border-bottom{
+  width: 30%;
+  height: 6px;
+  bottom: 10%;
+  left: 35%;
+  background: #fff;
+  opacity: 0;
+}
+.container:hover .border-bottom{
+  width: 80%;
+  left: 10%;
+  opacity: 0.5;
+}
+.border-left{
+  width: 3px;
+  height: 30%;
+  top: 35%;
+  left: calc(10% - 3px);
+  background: #fff;
+  opacity: 0;
+}
+.container:hover .border-left{
+  height: 80%;
+  top: 10%;
+  opacity: 0.5;
+}
+.border-right{
+  width: 3px;
+  height: 30%;
+  top: 35%;
+  right: calc(10% - 3px);
+  background: #fff;
+  opacity: 0;
+}
+.container:hover .border-right{
+  height: 80%;
+  top: 10%;
+  opacity: 0.5;
+}
+
+  </style>
+</head>
+<body>
+<div class=main>
+  <div class='bg'></div>
+  <div class="container">
+    <p>欢迎欣赏我老婆的美颜</p>
+    <div class="border-top"></div>
+    <div class="border-bottom"></div>
+    <div class="border-left"></div>
+    <div class="border-right"></div>
+  </div>
+</div>
+</body>
+</html>
