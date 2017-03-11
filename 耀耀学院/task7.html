@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+.input{
+  width: 650px;
+  margin: 50px auto;
+  font-size: 20px;
+}
+.input *{
+  margin: 10px;
+}
+input{
+  font-size: 18px;
+  height: 30px;
+}
+.sort{
+  position: relative;
+}
+.sort::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 2px;
+  border: 8px solid transparent;
+  border-bottom-color: #000;
+}
+.sort::after{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 2px;
+  border: 8px solid transparent;
+  border-top-color: #000;
+}
+table{
+  width: 500px;
+  margin: 50px auto;
+  border: 1px solid;
+  border-collapse: collapse;
+  border-spacing: 5px 10px;
+}
+th{
+  border: 1px solid;
+  background: #aaa;
+  height: 40px;
+}
+td{
+  vertical-align: middle;
+  border: 1px solid;
+  width: 80px;
+}
+  </style>
+</head>
+<body>
+  <div class="input">
+    姓名<input value=abc type=text>
+    语文<input value=20 type=text>
+    <br>
+    数学<input value=30 type=text>
+    英语<input value=40 type=text>
+    <br>
+    <input id=btn type=button value=插入>
+  </div>
+  <table>
+    <tr>
+      <th>姓名</th>
+      <th class=sort>语文</th>
+      <th class=sort>数学</th>
+      <th class=sort>英语</th>
+      <th class=sort>总分</th>
+    </tr>
+  </table>
+  <script>
+// 保存所有行
+var items = [];
+var sortCol = -1;
+// 每一行用一个Item保存数据
+function Item(){
+  var data = Array.prototype.slice.apply(arguments);
+  this.getData = function(n){
+    return data[n];
+  }
+  this.insert = function(e){
+    var tr = document.createElement('tr');
+    var sum = 0;
+    //表格第一项
+    var text = document.createTextNode(data[0]);
+    var td = document.createElement('td');
+    td.appendChild(text);
+    tr.appendChild(td);
+    //表格分数项
+    for(let i=1, len=data.length; i<len; i++){
+      var text = document.createTextNode(data[i]);
+      var td = document.createElement('td');
+      td.appendChild(text);
+      tr.appendChild(td);
+      sum += parseInt(data[i]);
+    }
+    //汇总项
+    var text = document.createTextNode(sum);
+    var td = document.createElement('td');
+    td.appendChild(text);
+    tr.appendChild(td);
+    data.push(sum);
+    document.getElementsByTagName('table')[0].getElementsByTagName('tbody')[0].appendChild(tr);
+  }
+}
+
+// 生成一行
+var btn = document.getElementById('btn');
+btn.onclick = function(e){
+  var name = document.getElementsByTagName('input')[0].value;
+  var chinese = document.getElementsByTagName('input')[1].value;
+  var math = document.getElementsByTagName('input')[2].value;
+  var english = document.getElementsByTagName('input')[3].value;
+  var item = new Item(name,chinese,math,english);
+  items.push(item);
+  item.insert();
+}
+
+// 重新排序
+function review(e){
+  if (e.offsetX > 75){
+    // 删除数据行
+    var table = document.getElementsByTagName('table')[0];
+    while (table.rows.length > 1)
+      table.deleteRow(1);
+    if(e.offsetY < 20)
+      sort(table,true);
+    else
+      sort(table);
+  }
+}
+// 排序序
+function sort(table,asc){
+  //升序
+  if(asc){
+    items = items.sort(function(a,b){
+        return a.getData(sortCol) > b.getData(sortCol);
+    });
+  }
+  //降序
+  else{
+    items = items.sort(function(a,b){
+        return a.getData(sortCol) < b.getData(sortCol);
+    });
+  }
+
+  // 重新输入数据
+  for(let i=0,rowlen=items.length; i<rowlen; i++){
+    var row = table.insertRow(i+1);
+    for(let j=0; j<5; j++){
+      var cell =row.insertCell(j);
+      cell.innerText = items[i].getData(j);
+    }
+  }
+}
+
+var scores = document.getElementsByClassName('sort');
+for(let i=0, len=scores.length; i<len; i++){
+  scores[i].onclick = function(e){
+    sortCol = this.cellIndex;
+    review(e);
+  }
+}
+
+
+
+  </script>
+</body>
+</html>
