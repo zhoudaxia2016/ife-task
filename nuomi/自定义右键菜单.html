@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+*{margin: 0;padding: 0;}
+.container{
+  height: 500px;
+  width: 1000px
+  margin: 100px;
+  font-size: 40px;
+  line-height: 500px;
+  text-align: center;
+  background: #aaa;
+  position: relative;
+}
+.menu{
+  position: absolute;
+  width: 200px;
+  top: 100px;
+  left: 100px;
+  background: #fff;
+}
+.menu li{
+  list-style: none;
+  font-size: 20px;
+  line-height: 30px;
+}
+.menu li:hover{
+  background: #00a;
+  color: #fff;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    来点我啊！
+  </div>
+  <script>
+var list = ['前进','返回','重新加载','查看网页源代码'];
+var container = document.getElementsByClassName('container')[0]
+container.oncontextmenu = function(e){
+  var menu = document.getElementsByClassName('menu')[0];
+  if(menu)
+    this.removeChild(menu);
+  var menu = document.createElement('ul');
+  for(let i=0,len=list.length; i<len; i++){
+    let item = document.createElement('li');
+    item.appendChild(document.createTextNode(list[i]));
+    menu.appendChild(item);
+  }
+  menu.className = 'menu';
+  if (e.clientX < (document.body.clientWidth - 200)){
+    menu.style.left = e.offsetX + 'px';
+    menu.style.top = e.offsetY + 'px';
+  }
+  else{
+    menu.style.left = e.offsetX - 200 + 'px';
+    menu.style.top = e.offsetY + 'px';
+  }
+  this.appendChild(menu);
+  return false;
+}
+document.onclick = function(e){
+  var menu = document.getElementsByClassName('menu')[0];
+  if(menu)
+    document.getElementsByClassName('container')[0].removeChild(menu);
+}
+  </script>
+</body>
+</html>
