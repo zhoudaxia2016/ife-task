@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+a:link,
+a:active,
+a:hover,
+a:visited{
+  color: #00a;
+  text-decoration: none;
+}
+a{
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: bold;
+}
+
+.container{
+  margin: 50px 300px;
+  border: 2px solid;
+  padding: 5px;
+}
+.item{
+  border-bottom: 1px solid #aaa;
+}
+.content:not(:target){
+  display: none
+}
+.content:target{
+  display: block;
+}
+.showbtn:target{
+  display: block;
+}
+.content:target+.showbtn{
+  display: none;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="item">
+      <div class=content id=item-1-content>
+        <a href=#item-1-showbtn>This is item1</a>
+        <p>Ipsum eius hic harum nobis repellendus dolore! Laudantium optio adipisci doloremque sequi ipsum? Eveniet quisquam est nisi quod quibusdam dolore totam enim maxime dolorum iusto placeat! Accusantium perferendis cupiditate quae voluptatum dolore maiores nobis deleniti. Corrupti natus neque nihil voluptas perspiciatis, quisquam! Dolorum mollitia dignissimos quis tempora nulla voluptate assumenda?</p>
+      </div>
+      <a class=showbtn href='#item-1-content' id=item-1-showbtn>This is item1</a>
+    </div>
+    <div class="item">
+      <div class=content id=item-2-content>
+        <a href=#item-2-showbtn>This is item2</a>
+        <p>Adipisicing ratione provident sequi quae asperiores. Consequatur quibusdam assumenda distinctio quos laudantium quasi in facere deserunt. Ipsa illo quisquam tempora magnam dolores aut eum perspiciatis fugit. Voluptate consequatur eum deleniti!</p>
+      </div>
+      <a class=showbtn href='#item-2-content' id=item-1-showbtn>This is item2</a>
+    </div>
+    <div class="item">
+      <div class=content id=item-3-content>
+        <a href=#item-3-showbtn>This is item3</a>
+        <p>
+        Consectetur tempore quibusdam magnam at a, fuga! Minus quae optio alias veritatis nulla ipsum tempore dolorum quasi labore. Animi debitis rerum nihil consectetur quae molestiae mollitia culpa nulla quidem at? Hic perferendis ipsam similique asperiores dignissimos dicta? Fuga eos itaque.
+        </p>
+      </div>
+      <a class=showbtn href='#item-3-content' id=item-3-showbtn>This is item3</a>
+    </div>
+  </div>
+</body>
+</html>
+  </div>
+</body>
+</html>
