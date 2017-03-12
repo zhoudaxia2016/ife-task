@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <script>
+// 本来是想每次定义get的时候用： getValue('name',name);
+// 实际上返回的函数形成了闭包，每次访问属性value都是不变的。。。
+/*
+function getValue(valuename,value){
+  return function(){
+    console.log('你访问了' + valuename);
+    return value;
+  };
+}
+*/
+
+
+function Data(obj){
+  var name = obj.name;
+  var age = obj.age;
+  var university = obj.university;
+  var major = obj.major;
+  Object.defineProperty(this,'name',{
+    get: function(){
+            console.log('你访问了name');
+            return name;
+         },
+    set: function(value){
+            console.log('你设置了name,新的值为' + value);
+            name = value;
+         }
+  });
+  Object.defineProperty(this,'age',{
+    get: function(){
+            console.log('你访问了age');
+            return age;
+         },
+    set: function(value){
+            console.log('你设置了age,新的值为' + value);
+            age = value;
+         }
+  });
+  Object.defineProperty(this,'university',{
+    get: function(){
+            console.log('你访问了university');
+            return university;
+         },
+    set: function(value){
+            console.log('你设置了university,新的值为' + value);
+            university = value;
+         }
+  });
+  Object.defineProperty(this,'major',{
+    get: function(){
+            console.log('你访问了major');
+            return major;
+         },
+    set: function(value){
+            console.log('你设置了major,新的值为' + value);
+            major = value;
+         }
+  });
+}
+function Observer(obj){
+  var data = new Data(obj);
+  Object.defineProperty(this,'data',{
+    get: function(){
+      return data;
+    }
+  });
+}
+
+  </script>
+</body>
+</html>
