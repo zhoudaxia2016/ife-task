@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <div class="container">
+    <div class=number>
+      请输入手机号： <input type=text> <span class=msg></span>
+    </div>
+    <div class=neighbor>
+      请输入有有相同单词相邻的字符串： <input type=text> <span class=msg></span>
+    </div>
+  </div>
+  <script>
+var inputs = document.getElementsByTagName('input');
+function test(pattern){
+  if(pattern.test(this.value)){
+    this.parentNode.getElementsByClassName('msg')[0].innerText = '输入合法';
+  }
+  else{
+    this.parentNode.getElementsByClassName('msg')[0].innerText = '输入格式错误！'
+  } 
+}
+inputs[0].addEventListener('change',test.bind(inputs[0],/1[358]\d{9}/));
+inputs[1].addEventListener('change',test.bind(inputs[1],/(\S+)\s+\1/));
+  </script>
+</body>
+</html>
