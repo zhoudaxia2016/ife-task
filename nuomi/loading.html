@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+*{margin: 0; padding: 0;}
+html,body{
+  width: 100%;
+  height: 100%;
+}
+
+/* 外圆环旋转动画 */
+@keyframes rotate{
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(-360deg);
+  }
+}
+
+/* 淡色的半圆旋转动画 */
+@keyframes rotate_light{
+  0%{
+    transform: rotate(0);
+  }
+  25%,50%{
+    transform: rotate(-180deg);
+  }
+  75%,100%{
+    transform: rotate(-360deg);
+  }
+}
+
+/* 深色的半圆旋转动画 */
+@keyframes rotate_deep{
+  0%{
+    transform: rotate(0);
+  }
+  24%{
+    z-index: 0;
+  }
+  25%{
+    z-index: 99999;
+    transform: rotate(0);
+  }
+  50%{
+    transform: rotate(-180deg);
+    z-index: 4;
+  }
+  74%{
+    z-index: 4;
+  }
+  75%{
+    transform: rotate(-180deg);
+    z-index: 2;
+  }
+  100%{
+    transform: rotate(-360deg);
+  }
+}
+
+.border{
+  border: 2px solid #253b6e;
+  border-top-color: transparent;
+  border-radius: 32px;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -32px;
+  animation: rotate 2s linear infinite;
+}
+.circle::before{
+  border-radius: 20px 0 0 20px;
+  width: 20px;
+  height: 40px;
+  background: #d2ecf9;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -20px;
+  content: '';
+  z-index: 3;
+  animation: rotate_light 4s linear infinite;
+  transform-origin: right center;
+}
+.circle::after{
+  border-radius: 20px 0 0 20px;
+  width: 20px;
+  height: 40px;
+  background: #1f5f8b;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -20px;
+  animation: rotate_deep 4s linear infinite;
+  content: '';
+  transform-origin: right center;
+  z-index: 1;
+}
+.bg::before{
+  border-radius: 20px 0 0 20px;
+  width: 20px;
+  height: 40px;
+  background: #1f5f8b;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -20px;
+  content: '';
+}
+.bg::after{
+  border-radius: 0 20px 20px 0;
+  width: 20px;
+  height: 40px;
+  background: #d2ecf9;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -20px 0;
+  content: '';
+}
+body{
+  position: relative;
+}
+  </style>
+</head>
+<body>
+<div class="loading">
+  <!-- 因为各部分的旋转都不一样，所以我只能用多了div实现，若只用一个，只有一种旋转效果 -->
+  <div class="border"></div> <!-- 外四分之三圆环 -->
+  <div class='circle'></div> <!-- 内旋转两个半圆，用before与after实现，下同 -->
+  <div class="bg"></div><div> <!-- 内固定两个半圆 -->
+</body>
+</html>
