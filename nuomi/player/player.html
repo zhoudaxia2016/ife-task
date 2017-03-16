@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+*{margin: 0;padding: 0;}
+.main{
+  width: 400px;
+  height: 600px;
+  margin: 100px auto;
+  background: #bbf;
+  border: 5px solid #1b3c59;
+  border-radius: 5px;
+}
+
+/* 歌名与歌手样式 */
+.name{
+  text-align: center;
+  color: #253b6e;
+  padding: 10px;
+  box-shadow: 0 2px 2px #aaf;
+  font-size: 30px;
+}
+.singer{
+  text-align: center;
+  margin-top: 5px;
+  color: #1891ac;
+  padding: 8px;
+  overflow: hidden;
+  font-size: 18px;
+}
+
+/* 音量条背景 */
+.volume-bg{
+  width: 250px;
+  height: 3px;
+  margin: 20px auto;
+  margin-top: 0;
+  background: #aaa;
+  border-radius: 3px;
+  border: #bbf solid;
+  border-width: 10px 0; 
+}
+/* 音量条样式 */
+.volume-bar{
+  width: 100px;
+  height: 3px;
+  position: relative;
+  background: #11bfae;
+  border-radius: 3px;
+  transition: width 0.5s linear;
+} 
+.volume-bar::before{
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  position: absolute;
+  border-radius: 6px;
+  top: -1.5px;
+  right: 0;
+}
+
+
+/* 光盘样式 */
+.disk{
+  margin: 20px auto;
+  width: 250px;
+  height: 250px;
+  border: 8px solid #253b6e;
+  border-radius: 200px;
+  box-shadow: 0 0 5px 5px #d3ecf9;
+}
+.rotate{
+  animation: disk-rotate 15s infinite linear;
+}
+@keyframes disk-rotate{
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+/* 进度条背景 */
+.progress-bg{
+  width: 300px;
+  height: 5px;
+  margin: 20px auto;
+  background: #aaa;
+  border-radius: 5px;
+  border: #bbf solid;
+  border-width: 10px 0;
+}
+/* 进度条样式 */
+.progress-bar{
+  width: 0;
+  height: 5px;
+  position: relative;
+  background: #1b3c59;
+  border-radius: 5px;
+  transition: width 0.5s linear;
+} 
+.progress-bar::before{
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  position: absolute;
+  border-radius: 10px;
+  top: -2.5px;
+  right: 0;
+}
+
+/* 按钮通用样式 */
+.btn:hover{
+  box-shadow: 0 0 10px 3px #fff;
+}
+
+/* 控制条样式 */
+.controls{
+  text-align: center;
+  margin-top: 50px;
+}
+.controls *{
+  display: inline-block;
+}
+
+/* 播放按钮样式 */
+.pause{
+  width: 40px;
+  height: 40px;
+  border: 3px solid #1b3c59;
+  border-radius: 40px;
+  position: relative;
+  margin: 0 30px 0 30px;
+}
+.pause::before{
+  position: absolute;
+  content: '';
+  top: 10px;
+  left:14px;
+  width: 4px;
+  height: 20px;
+  background: transparent;
+  border-left: 4px solid #1b3c59;
+  border-right: 4px solid #1b3c59;
+}
+.play{
+  width: 40px;
+  height: 40px;
+  border: 3px solid #1b3c59;
+  border-radius: 40px;
+  position: relative;
+  margin: 0 30px 0 30px;
+}
+.play::before{
+  position: absolute;
+  content: '';
+  top: 7px;
+  left: 13px;
+  border: 12px solid transparent;
+  border-left: 18px solid #1b3c59;
+  content: '';
+}
+
+
+/* 上一首按钮样式 */
+.prev{
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-right: 20px solid #1b3c59;
+  margin-bottom: 8px;
+  position: relative;
+}
+.prev::before{
+  width: 3px;
+  height: 30px;
+  background: #1b3c59;
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -5px;
+}
+
+/* 下一首按钮样式 */
+.next{
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 20px solid #1b3c59;
+  margin-bottom: 8px;
+  position: relative;
+}
+.next::before{
+  width: 3px;
+  height: 30px;
+  background: #1b3c59;
+  content: '';
+  position: absolute;
+  top: -15px;
+  right: -5px;
+}
+  </style>
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class=music-list>
+  </div>
+  <div class=main> 
+    <audio src=만약에.mp3 id=player></audio>
+    <h2 class=name> 歌名 </h2>
+    <h3 class=singer> 歌手 </h3>
+    <div class="volume-bg"><div class="volume-bar"></div></div>
+    <div class="disk"></div>
+    <div class="progress-bg"><div class="progress-bar"></div></div>
+    <div class="controls">
+      <div class="prev btn"></div>
+      <div class="play btn toggle"></div>
+      <div class="next btn"></div>
+    </div>
+  </div>
+</div>
+<script>
+// 歌曲列表
+function Song(name,singer,src,img){
+  this.name = name;
+  this.singer = singer;
+  this.src = src;
+  this.img = img;
+}
+var songs = [
+  new Song('만약에','泰妍','만약에.mp3','1.jpg'),
+  new Song('รักที่ตามหา','Max Jenmana','รักที่ตามหา.mp3','2.jpg'),
+  new Song('Cry on my shoulder','Deutschland sucht den Superstar / Various Artists','cryonmyshoulder.mp3','3.jpg'),
+  new Song('I don\'t want to say goodble','Teddy Thompson','idontwanttosaygoodble.mp3','4.jpg'),
+  new Song('serious','Atom','serious.mp3','5.jpg'),
+  new Song('够钟','周柏豪','够钟.mp3','6.jpg'),
+  new Song('忆似古人曲','兔裹煎蛋卷','忆似古人曲.mp3','7.jpg')
+];
+var songNum = songs.length;
+var currentSong = 0;
+
+// 初始化
+var player = document.getElementById('player');
+player.oncanplaythrough = function(e){
+  this.volume = 0.4;
+  var main = document.getElementsByClassName('main')[0];
+  main.getElementsByClassName('name')[0].innerText = songs[currentSong].name;
+  main.getElementsByClassName('singer')[0].innerText = songs[currentSong].singer;
+  main.getElementsByClassName('disk')[0].style.background = 'url('+songs[currentSong].img+')';
+  main.getElementsByClassName('disk')[0].style.backgroundSize = 'cover';
+}
+
+
+// 播放与暂停
+document.getElementsByClassName('toggle')[0].onclick = function(e){
+  var player = document.getElementById('player');
+  if (player.paused){
+    // 光盘开始转动
+    document.getElementsByClassName('disk')[0].className = 'disk rotate';
+    // 按钮切换
+    this.className = 'pause btn toggle';
+    player.play();
+  }
+  else{
+    // 光盘停止转动
+    document.getElementsByClassName('disk')[0].className = 'disk';
+    // 按钮切换
+    this.className = 'play btn toggle';
+    player.pause();
+  }
+}
+
+// 音量控制
+document.getElementsByClassName('volume-bg')[0].onclick = function(e){
+  var player = document.getElementById('player');
+  player.volume = e.offsetX/250;
+  this.getElementsByClassName('volume-bar')[0].style.width = e.offsetX + 'px';
+}
+
+// 跳转播放
+document.getElementsByClassName('progress-bg')[0].onclick = function(e){
+  var player = document.getElementById('player');
+  player.currentTime = player.duration * e.offsetX/300;
+  this.getElementsByClassName('progress-bar')[0].style.width = e.offsetX + 'px';
+}
+
+// 进度条移动
+setInterval(function(){
+    var player = document.getElementById('player');
+    if (!player.paused){
+      var currentTime = player.currentTime;
+      var duration = player.duration;
+      document.getElementsByClassName('progress-bar')[0].style.width = 300 * currentTime/duration + 'px';
+    }
+},1000);
+
+// 切换歌曲
+document.getElementsByClassName('next')[0].onclick = function(e){
+  prevOrNext(1);
+}
+document.getElementsByClassName('prev')[0].onclick = function(e){
+  prevOrNext(-1);
+}
+
+function prevOrNext(n){
+  var player = document.getElementById('player');
+  currentSong = (currentSong + n)%songNum;
+  if (currentSong == -1) currentSong = 6;
+  if (player.paused){
+    player.setAttribute('src',songs[currentSong].src);
+  }
+  else{
+    player.setAttribute('src',songs[currentSong].src);
+    player.play();
+  }
+}
+
+document.getElementById('player').onended = function(e){
+  prevOrNext(1);
+  this.play();
+}
+
+</script>
+</body>
+</html>
