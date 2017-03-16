@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <script>
+function assign(that,obj,watch){
+  for(let key in obj){
+    // 若属性值不是对象
+    if (typeof obj[key] != 'object'){
+      let value = obj[key];
+      that[key] = value;
+      Object.defineProperty(that,key,{
+          get: function(){
+            console.log('你访问了'+key);
+            return value;
+          },
+          set: function(v){
+            if (typeof v != 'object'){
+              if (watch[key])
+                watch[key](v);
+              else
+                console.log('你设置了'+key+' 新的值为'+v);
+              value = v;
+            }
+            else{
+              delete value;
+              value = new Object;
+              if (watch[key])
+                watch[key](v);
+              else
+                console.log('你设置了'+key);
+              assign(value,v,watch);
+            }
+          }
+      }); 
+    }
+    // 若属性值为对象
+    else{
+      that[key] = new Object;
+      assign(that[key],obj[key],watch);
+    }
+  }
+}
+
+function Observer(obj){
+  this.data = new Object;
+  
+  // 用来保存watch函数
+  var watch = new Object;
+
+  // 深复制obj，并且设置getter与setter
+  assign(this.data,obj,watch);
+
+  // 设置watch函数
+  this.$watch = function(key,func){
+    watch[key] = func;
+  }
+}
+
+// 一个比较深的对象：某些属性的值也是一个对象
+console.log('测试一：')
+let obj = {
+ a: 1,
+ b: 2,
+ c: {
+     d: 3,
+     e: 4
+ }
+}
+let app1 = new Observer(obj);
+a_out = app1.data.a;
+console.log('a_out='+a_out);
+app1.data.a = 100;
+console.log('a='+app1.data.a);
+d_out = app1.data.c.d;
+console.log('d_out='+d_out);
+app1.data.c.d = 100;
+console.log('d='+app1.data.c.d);
+  
+console.log('测试二：')
+let app2 = new Observer({
+       name: 'youngwind',
+       age: 25
+});
+app2.data.name = {
+       lastName: 'liang',
+       firstName: 'shaofeng'
+};
+app2.data.name.lastName;
+// 这里还需要输出 '你访问了 lastName '
+app2.data.name.firstName = 'lalala';
+// 这里还需要输出 '你设置了firstName, 新的值为 lalala'
+
+console.log('测试三：');
+let app3 = new Observer({
+       name: 'youngwind',
+       age: 25
+});
+app3.$watch('age', function(age) {
+       console.log(`我的年纪变了，现在已经是：${age}岁了`)
+});
+app3.data.age = 100;
+  </script>
+</body>
+</html>
