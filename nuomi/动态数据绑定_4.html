@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <div id=app>
+    <p>姓名：{{user.name}}</p>
+    <p>年龄：{{user.age}}</p>
+  </div>
+  <input id=render type=button value=渲染>
+  <script>
+function Vue(selector){
+  var el = selector.el;
+  //var data = copy(selector.data);
+  var data = selector.data;
+  this.render = function(){
+    var ele = document.querySelector(el);
+    ele.innerHTML = ele.innerHTML.replace(/{{([^}]+)}}/g,function(m,p1){
+        var keys = p1.split('.');
+        var ret = data;
+        for(let i=0,len=keys.length; i<len; i++){
+          ret = ret[keys[i]];
+        }
+        return ret;
+    });
+  }
+}
+
+selector = {
+  el: '#app',
+  data: {
+    user: {
+      name: 'youngwind',
+      age: 25
+    }
+  }
+};
+document.getElementById('render').onclick = function(e){
+  var app = new Vue(selector);
+  app.render();
+}
+  </script>
+</body>
+</html>
